@@ -1,13 +1,20 @@
 package analougish
 
-const crs = 5                //cell row size
-const ccs = 7                //cell col size
-const crm = ((1 << crs) - 1) //cell row bitmask
-const chs = 70               //charset size [total characters]
-
 type Matrix struct {
+	Charset *[]rune
+	Bitmap  *[]uint8
+	Name    string
+	Rows    uint
+	Cols    uint
 }
 type Segment struct {
+}
+
+type Display interface {
+	Build() *Matrix
+	Validate() error
+	IsMatrix() bool
+	IsSegment() bool
 }
 
 type MatrixChar struct {
@@ -30,7 +37,12 @@ type MatrixCharset struct {
 // 	//<div class="nrow"></div>
 // }
 
+const chs = 70 //charset size [total characters]
 func DotMatrix() [chs]rune {
+	const crs = 5                //cell row size
+	const ccs = 7                //cell col size
+	const crm = ((1 << crs) - 1) //cell row bitmask
+
 	//bitmask to extract each row
 	// var rm [ccs]uint64
 	// for i := 0; i < ccs; i++ {
